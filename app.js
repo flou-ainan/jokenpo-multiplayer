@@ -4,7 +4,7 @@ const fs = require('fs'); // Módulo para trabalhar com o sistema de arquivos
 const path = require('path'); // Módulo para trabalhar com caminhos de arquivos
 
 const hostname = '0.0.0.0'; // Escuta em todas as interfaces de rede
-const port = 8080; // Porta que o servidor Node.js vai escutar
+const port = 80; // Porta que o servidor Node.js vai escutar
 
 const server = http.createServer((req, res) => {
   // Verifica se a requisição é para a raiz do site (/)
@@ -37,6 +37,6 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(port, hostname, () => {
-  console.log(`Servidor rodando em http://${hostname}:${port}/`);
+  console.log(`Servidor rodando em https://${hostname}:${port}/`);
 });
      
