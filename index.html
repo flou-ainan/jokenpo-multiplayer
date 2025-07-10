@@ -1,1 +1,244 @@
-<h1>Olá mundo!</h1>
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Jogo André</title>
+  <style>
+    * {
+      scale: 1.12;
+      box-sizing: border-box;
+    }
+
+    h1 {
+      margin-top: 60px;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .game {
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+
+    span {
+      display: flex;
+      font-size: 25pt;
+    }
+
+    .opcoes {
+      gap: 20px;
+      padding-top: 20px;
+    }
+
+    .texto-opcao {
+      text-align: center;
+    }
+
+    .jogando {
+      display: none;
+    }
+
+    .comecar {
+      display: flex;
+    }
+
+    .opcaoPC {
+      display: none;
+    }
+
+    .recomecar {
+      display: none;
+    }
+
+    /* LOADER */
+    .loader {
+      margin-top: 20px;
+      width: 48px;
+      height: 48px;
+      display: none;
+      position: relative;
+    }
+    .loader::after,
+    .loader::before {
+      content: '';  
+      box-sizing: border-box;
+      width: 48px;
+      height: 48px;
+      border: 2px solid #4b4b4b;
+      position: absolute;
+      left: 0;
+      top: 0;
+      animation: rotation 1.8s ease-in-out infinite alternate;
+    }
+    .loader::after {
+      border-color: #FF3D00;
+      animation-direction: alternate-reverse;
+    }
+
+    @keyframes rotation {
+      0% {
+        transform: rotate(0deg);
+      }
+      50% {
+        transform: rotate(270deg);
+      }
+      100% {
+        transform: rotate(450deg);
+      }
+    } 
+
+    @media screen and (min-width: 800px) {
+      body {
+        padding-top: 70px;
+      }
+      .game{
+          scale: 1.5;
+          margin-top: 50px;
+      }
+    }    
+  </style>
+
+</head>
+<body>
+
+<h1> Joken Po </h1>
+
+<button class="comecar" onclick="iniciar()"> Começar </button>
+<div class="game jogando">
+  <p class="texto-opcao jogando">Escolha uma opção:</p>
+  <div class="opcoes jogando">
+    <span  id="pedra" class="opcao"  onclick="escolher('pedra')">  🪨</span>
+    <span  id="papel" class="opcao"  onclick="escolher('papel')">  📃</span>
+    <span  id="tesoura" class="opcao" onclick="escolher('tesoura')"> ✂️</span>
+  </div>
+  <span class="loader" id="loader"></span>
+  <div class="opcoes jogando">
+    <span  id="opcaoPC" class="opcaoPC">🪨</span>
+  </div>
+  <div class="resultado jogando" id="resultado">
+  </div>
+  <button class="recomecar" id="recomecar" onclick="reiniciar()"> Recomeçar </button>
+</div>
+
+  <script>
+    function iniciar(){
+      console.log("teste")
+      let comecar = document.getElementsByClassName("comecar")[0]
+      comecar.style.display = "none"
+
+      let opcoes = document.getElementsByClassName("jogando")
+      for(const element of opcoes){
+          element.style.display = "flex"
+      }
+    }
+
+    function reiniciar(){
+      let elementosJogo = document.getElementsByClassName("jogando")
+      for(const element of elementosJogo){
+          element.style.display = "none"
+      }
+      let opcoes = document.getElementsByClassName("opcao")
+      for(const element of opcoes){
+          element.style.display = "flex"
+      }
+      let comecar = document.getElementsByClassName("comecar")[0]
+      comecar.style.display = "block"
+
+      let resultado = document.getElementById("resultado")
+      resultado.innerHTML = ""
+
+      let opcaoPC = document.getElementById("opcaoPC")
+      opcaoPC.style.display = "none"
+      
+      let reiniciar = document.getElementById("recomecar")
+      reiniciar.style.display = "none"
+
+      iniciar()
+    }
+
+    function escolher(opcao){
+      const naoOpcoes = document.getElementsByClassName("opcao")
+      for(const element of naoOpcoes){
+        if (element.id != opcao){
+          element.style.display = "none"
+        }
+      }
+      iniciarAdversario(opcao)
+    }
+
+    function iniciarAdversario(opcao){
+      let loader = document.getElementById("loader")
+      let opcaoPC = document.getElementById("opcaoPC")
+      loader.style = "display: inline-block;"
+      setTimeout(() => {
+        loader.style = "display: none;"
+        opcaoPC.innerHTML = sorteiaOpcao()
+        opcaoPC.style.display = "flex"
+        setTimeout(() => {
+          let resultado = document.getElementById("resultado")
+          console.log(opcao + " " + opcaoPC.innerHTML)
+          switch(opcaoPC.innerHTML){
+            case "🪨":
+              if (opcao === "pedra"){
+                resultado.innerHTML = "Empate"
+              }
+              if (opcao === "papel"){
+                resultado.innerHTML = "Você ganhou"
+              }
+              if (opcao === "tesoura"){
+                resultado.innerHTML = "Você perdeu"
+              }
+            break
+            case "📃":
+              if (opcao === "pedra"){
+                resultado.innerHTML = "Você perdeu"
+                console.log("como?")
+              }
+              if (opcao === "papel"){
+                resultado.innerHTML = "Empate"
+              }
+              if (opcao === "tesoura"){
+                resultado.innerHTML = "Você ganhou"
+              }
+            break
+            case "✂️":
+              if (opcao === "pedra"){
+                resultado.innerHTML = "Você ganhou"
+                }
+              if (opcao === "papel"){
+                resultado.innerHTML = "Você perdeu"
+              }
+              if (opcao === "tesoura"){
+                resultado.innerHTML = "Empate"  
+              }
+            break;
+          }
+          setTimeout(() => {
+            let reiniciar = document.getElementById("recomecar")
+            reiniciar.style.display = "flex"
+          },340)
+        },200)
+      },1800)
+    }
+
+    // sorteia 🪨, 📃, ou ✂️
+    function sorteiaOpcao(){
+      var opcaoPC = Math.floor(Math.random() * 3)
+      if (opcaoPC == 0){
+        opcaoPC = "🪨"
+      } else if (opcaoPC == 1){
+        opcaoPC = "📃"
+      } else {
+        opcaoPC = "✂️"
+      }
+      return opcaoPC
+    }
+  </script>
+
+</body>
+</html>
+ 
