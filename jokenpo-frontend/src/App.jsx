@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import Start from './components/Start.jsx'
-import CreateGame from './components/createGame.jsx'
+import CreateGame from './components/CreateGame.jsx'
 import JoinGame from './components/JoinGame.jsx'
 import Playing from './components/Playing.jsx'
 
