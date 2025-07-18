@@ -7,13 +7,15 @@ import Playing from './components/Playing.jsx'
 
 // Define the server URL from environment variables or default to localhost
 // This allows for easy configuration of the server URL in different environments
-const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000'
+//const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000'
+const serverUrl = ''
+
 function App() {
   const [gameId, setGameId] = useState()
   const [playerId, setPlayerId] = useState()
   const [gameState, setGameState] = useState("start")
 
-
+// export VITE_SERVER_URL="http://34.9.159.96:3000/"
   function stateLoad(){
     switch(gameState){
       case "start":
