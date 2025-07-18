@@ -4,7 +4,11 @@ const path = require('path');
 const app = express();
 const port = 3000; // Porta para o servidor
 const MAX_CAPACITY = 4; // Quantidade máxima de partidas
+const MATCH_INACTIVITY_TIMEOUT = 1000*60*5 // 5 minutos
+const cors = require('cors');
 
+// Configuração do CORS para permitir requisições do frontend
+app.use(cors());
 
 // Middleware para parsear JSON no corpo das requisições
 app.use(express.json());
@@ -137,13 +141,24 @@ app.post('/api/makeChoice', (req, res) => {
 });
 
 // Rota para obter o estado atual do jogo (polling)
-app.get('/api/gameState/:gameId/:playerId', (req, res) => {
-    const { gameId, playerId } = req.params;
+app.get('/api/gameState/', (req, res) => {
+    const { gameId, playerId } = req.body;
     const game = games.get(gameId);
+
+    console.log(typeof game);  // remover
+    console.log(game);  // remover
 
     if (game && game.players.has(playerId)) {
         const currentPlayer = game.players.get(playerId);
-        const opponent = Array.from(game.players.values()).find(p => p.id !== playerId);
+        
+        let opponent = null
+        game.players.forEach(player => {
+            console.log(player);
+            if (player.id !== playerId) opponent = player.id;
+        })
+
+
+        //const opponent = Array.from(game.players.values()).find(p => p.id !== playerId);
 
         let statusMessage = '';
         let playerChoiceDisplay = currentPlayer.choice ? choiceEmojis[currentPlayer.choice] : '?';
@@ -240,9 +255,7 @@ app.post('/api/leaveGame', (req, res) => {
     }
 });
 
-// O "catchall" handler: para qualquer requisição que não corresponda a uma
-// das rotas da API, envie de volta o arquivo index.html do React/Vite.
-// Isso é necessário para que o roteamento do lado do cliente funcione.
+// Rota para servir o arquivo HTML principal
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'jokenpo-frontend', 'dist', 'index.html'));
 });
@@ -268,7 +281,7 @@ setInterval(() => {
     // clear games after 2 minutes of inativity
     games.forEach(game => {
         const timeSinceLastUpdate = Date.now() - game.lastUpdated.getTime();
-        if (timeSinceLastUpdate > 120000) {
+        if (timeSinceLastUpdate > MATCH_INACTIVITY_TIMEOUT) {
             games.delete(game.gameId);
             console.log(`Jogo ${game.gameId} encerrado: Excedeu o tempo de conexão.`);
         }
