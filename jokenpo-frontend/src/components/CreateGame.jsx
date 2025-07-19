@@ -2,7 +2,7 @@ export default function CreateGame({ gameId, setGameId, setPlayerId, serverUrl, 
       //calls API on /createGame and returns gameId
   async function getGameId() {
     try{
-      const res = await fetch(serverUrl+'/api/createGame', {method: 'GET'})
+      const res = await fetch(serverUrl+'/api/createGame', {method: 'POST'})
       const data = await res.json()
       setGameId(data.gameId)
       setPlayerId(data.playerId)
@@ -25,7 +25,9 @@ export default function CreateGame({ gameId, setGameId, setPlayerId, serverUrl, 
                     <p>Your room ID is:</p>
                     <h3 className="font-bold">{gameId}</h3>
                     <br />
-                    <p>Share this room ID with your friends to play together!</p>
+                    <p>Share your room ID with your friend to play together!</p>
+                    <small alt="Copy this code and send it to your friend,
+                      ask him to access the game on his web browser, click joing game and paste this code.">Know more...</small>
                     <br />
                     <p>Waiting for player 2 to join...</p>
             </div>

@@ -1,3 +1,4 @@
+import {NavLink, Link} from 'react-router-dom';
 export default function Start({ onCreateGame, onJoinGame }) {
     return (
         <>
@@ -5,6 +6,9 @@ export default function Start({ onCreateGame, onJoinGame }) {
             <div className="flex flex-col items-center justify-center gap-4">
                 <button className="text-2xl" onClick={onCreateGame}>Create Game</button>
                 <button className="text-2xl" onClick={onJoinGame}>Join Game</button>
+                <Link to="/admin" >
+                    <button className="text-2xl">Admin Panel</button>
+                </Link>
             </div>
         </>
     )

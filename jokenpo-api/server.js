@@ -5,6 +5,7 @@ const app = express();
 const port = 3000; // Porta para o servidor
 const MAX_CAPACITY = 4; // Quantidade máxima de partidas
 const MATCH_INACTIVITY_TIMEOUT = 1000*60*5 // 5 minutos
+const sysPassord = 'jokenpo2323' // senha do admin
 const cors = require('cors');
 
 // Configuração do CORS para permitir requisições do frontend
@@ -53,7 +54,7 @@ function determineWinner(choice1, choice2) {
 // --- Rotas da API ---
 
 // Rota para criar um novo jogo
-app.get('/api/createGame', (req, res) => {
+app.post('/api/createGame', (req, res) => {
     // Recusa novos jogos caso o servidor esteja cheio
     if(games.size >= MAX_CAPACITY) res.status(200).json({error: "Servidor lotado! Tente novamente mais tarde"})
     const gameId = generateGameId(); // ID único para esta jogo
@@ -255,8 +256,22 @@ app.post('/api/leaveGame', (req, res) => {
     }
 });
 
-// Rota para servir o arquivo HTML principal
-app.get('/', (req, res) => {
+// Rota para exibir os jogos ativos
+app.post('/api/games', (req, res) => {
+    const {userPassword} = req.body
+    console.log(`Tentativa de acesso ao painel de administração com a senha: ${userPassword}`);
+    if (userPassword !== sysPassord) {
+        return res.status(403).json({ error: 'Acesso negado. Senha incorreta.' });
+    }else{
+        var activeGames = ' gameId  |  status\n'
+        games.forEach(game => activeGames += game.gameId+"  |  "+game.status+"\n")
+        console.log(`Painel de administração acessado com sucesso. Jogos ativos:\n${activeGames}`);
+        res.status(200).json({games:{games: Array.from(games.values())}});
+    }
+});
+
+// Rota para servir os demais roteamentos para o frontend
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'jokenpo-frontend', 'dist', 'index.html'));
 });
 
@@ -286,4 +301,4 @@ setInterval(() => {
             console.log(`Jogo ${game.gameId} encerrado: Excedeu o tempo de conexão.`);
         }
     })
-}, 4000);
+}, 40000);
