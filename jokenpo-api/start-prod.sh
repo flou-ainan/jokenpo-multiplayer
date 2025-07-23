@@ -15,7 +15,7 @@ if [ -z "$IP_ADDRESS" ]; then
 fi
 
 # Exporta a variável de ambiente para que o frontend saiba como se conectar.
-export VITE_SERVER_URL="http://${IP_ADDRESS}:3000"
+$env VITE_SERVER_URL="http://${IP_ADDRESS}:3000"
 
 echo "Iniciando o servidor em $VITE_SERVER_URL..."
 
