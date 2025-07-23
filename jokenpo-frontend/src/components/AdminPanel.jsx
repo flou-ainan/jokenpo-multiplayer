@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 
-export default function AdminPanel({apiResponse, error, handleLogin, setApiResponse, password, serverUrl}) {
+export default function AdminPanel({apiResponse, error, setApiResponse, password, serverUrl}) {
     // efeito que condicona um intervalo para chamadas periódicas
     // com setInterval e limpa o intervalo com clearInterval caso
     // o componente seja desmontado ou atualizado
     useEffect(() => {
         const interval = setInterval(() => {
-            fetch(import.meta.env.VITE_SERVER_URL || serverUrl + '/api/games', {
+            fetch(serverUrl + '/api/games', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -16,6 +16,9 @@ export default function AdminPanel({apiResponse, error, handleLogin, setApiRespo
                 .then(response => response.json())
                 .then(data => {
                     setApiResponse(data);
+                    if(apiResponse.games){
+                        console.log(apiResponse.games.map(game => (game + "\n ---\n")))
+                    }
                 })
                 .catch(err => {
                     console.error("Erro ao buscar dados do servidor:", err);
@@ -34,7 +37,7 @@ export default function AdminPanel({apiResponse, error, handleLogin, setApiRespo
                             <strong>Game ID:</strong> {game.gameId} <br />
                             <strong>Status:</strong> {game.status} <br />
                             <strong>Players:</strong> {game.players.map(player => player.playerId).join(', ')} <br />
-                            <strong>Created At:</strong> {new Date(game.createdAt).toLocaleString()} <br />
+                            <strong>Last updated at:</strong> {new Date(game.lastUpdated).toLocaleString()} <br />
                         </li>
                     ))}
                 </ul>

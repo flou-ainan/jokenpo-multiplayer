@@ -259,14 +259,26 @@ app.post('/api/leaveGame', (req, res) => {
 // Rota para exibir os jogos ativos
 app.post('/api/games', (req, res) => {
     const {userPassword} = req.body
-    console.log(`Tentativa de acesso ao painel de administração com a senha: ${userPassword}`);
+    //console.log(`Tentativa de acesso ao painel de administração com a senha: ${userPassword}`);
     if (userPassword !== sysPassord) {
         return res.status(403).json({ error: 'Acesso negado. Senha incorreta.' });
     }else{
-        var activeGames = ' gameId  |  status\n'
-        games.forEach(game => activeGames += game.gameId+"  |  "+game.status+"\n")
-        console.log(`Painel de administração acessado com sucesso. Jogos ativos:\n${activeGames}`);
-        res.status(200).json({games:{games: Array.from(games.values())}});
+        var activeGames = []
+        games.forEach(game => {
+            activeGames.push({
+                gameId: game.gameId,
+                status: game.status,
+                players: (() => {
+                    const players = []
+                    game.players.forEach(player => players.push(player))
+                    return players
+                })(),
+                lastUpdated: game.lastUpdated
+            })
+        })
+        //console.log(`Painel de administração acessado com sucesso. Jogos ativos:\n${activeGames}`);
+        //res.status(200).json({games:{games: Array.from(games.values())}});
+        res.status(200).json({games:activeGames});
     }
 });
 

@@ -1,5 +1,14 @@
-export default function CreateGame({ gameId, setGameId, setPlayerId, serverUrl, playerId, setGameState }) {
-      //calls API on /createGame and returns gameId
+import { useAppStore } from '../store.js'
+export default function CreateGame() {
+// Initializing State Variables
+  const setGameState = useAppStore(state => state.setGameState)
+  const gameId = useAppStore(state => state.gameId)
+  const setGameId = useAppStore(state => state.setGameId)
+  const playerId = useAppStore(state => state.playerId)
+  const setPlayerId = useAppStore(state => state.setPlayerId)
+  const serverUrl = useAppStore(state => state.serverUrl)
+  
+  //calls API on /createGame and returns gameId
   async function getGameId() {
     try{
       const res = await fetch(serverUrl+'/api/createGame', {method: 'POST'})
@@ -11,11 +20,17 @@ export default function CreateGame({ gameId, setGameId, setPlayerId, serverUrl, 
       alert(err)
     }
   }
+  
+  
     return (
         <div className="flex flex-col items-center justify-center gap-4">
             <button onClick={() => {
                 if(!gameId) getGameId()
-                else alert("Room already created!")
+                else {
+                if (confirm("Room already created!\n Create another room?")){
+                  getGameId()
+                }
+              }
             }}>Generate room</button>
             {gameId && (
                 <div>

@@ -1,4 +1,6 @@
-export default function JoinGame({ setGameState }) {
+import { useAppStore } from "../store"
+export default function JoinGame() {
+  const setGameState = useAppStore(state => state.setGameState)
     return (
         <div className="flex flex-col items-center justify-center gap-4">
           <h3 className="text-2xl font-bold">Join Game</h3>
