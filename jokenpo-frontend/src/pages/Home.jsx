@@ -12,7 +12,7 @@ import Playing from '../components/Playing.jsx'
 export default function Home() {
   const serverUrl = useAppStore(state => state.serverUrl)
   const setServerUrl = useAppStore(state => state.setServerUrl)
-  setServerUrl(import.meta.env.VITE_SERVER_URL || 'http://localhost:3000')
+  setServerUrl(import.meta.env.VITE_SERVER_URL || '' || 'http://localhost:3000')
 
   const setGameId = useAppStore(state => state.setGameId)
   const setPlayerId = useAppStore(state => state.setPlayerId) 

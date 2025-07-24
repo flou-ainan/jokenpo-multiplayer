@@ -7,9 +7,10 @@ import AdminPanel from '../components/AdminPanel.jsx';
 // IMPORTANTE: Para deploy na VM, você precisa configurar VITE_SERVER_URL
 // no seu arquivo .env.production (ou .env) do Vite.
 // Ex: VITE_SERVER_URL=http://SEU_IP_EXTERNO_DA_VM:3000
-const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
+const serverUrl = import.meta.env.VITE_SERVER_URL || "" || 'http://localhost:3000';
 
 export default function Admin() {
+    console.log(serverUrl)
     const [password, setPassword] = useState('');
     const [pageState, setPageState] = useState('login');
     const [apiResponse, setApiResponse] = useState(null); // Para armazenar a resposta da API

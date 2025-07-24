@@ -1,12 +1,12 @@
 // server.js
 const express = require('express');
 const path = require('path');
+const cors = require('cors');
 const app = express();
 const port = 3000; // Porta para o servidor
 const MAX_CAPACITY = 4; // Quantidade máxima de partidas
 const MATCH_INACTIVITY_TIMEOUT = 1000*60*5 // 5 minutos
 const sysPassord = 'jokenpo2323' // senha do admin
-const cors = require('cors');
 
 // Configuração do CORS para permitir requisições do frontend
 app.use(cors());
