@@ -1,31 +1,12 @@
-import { useState } from 'react'
-import './App.css'
-function App() {
-  const [gameId, setGameId] = useState()
-  //calls API on /createGame and returns gameId
-  async function getGameId() {
-    try{
-      const res = await fetch('/api/createGame', {method: 'GET'})
-      // if (!res.ok) {
-      //   throw new Error('Criação de jogo falhou')
-      // }
-      const data = await res.json()
-      setGameId(data.gameId)
-    } catch (err) {
-      console.log(err)
-      alert(err)
-    }
-  }
+import { Routes, Route } from "react-router-dom";
+import Home from './pages/Home.jsx';
+import Admin from './pages/Admin.jsx';
 
-
-  return (
-    <>
-      <h1>Joken Po Online</h1>
-      <button onClick={getGameId}>Criar Jogo</button>
-      <p>Your game ID is:</p>
-      <h3>{gameId}</h3>
-    </>
+export default function App() {
+  return(
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/admin" element={<Admin />} />
+    </Routes>
   )
 }
-
-export default App
