@@ -56,6 +56,10 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.btn-red {
+  background-color: brown;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -66,5 +70,50 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+
+/*implements fade in + zoom in animation for hot toast*/
+.animate-enter{
+  animation: fadeIn 0.3s cubic-bezier(0.215, 0.610, 0.355, 1) forwards, zoomIn 0.25s ease-out forwards;
+}
+/*implements fade out + zoom out animation for hot toast*/
+.animate-leave{
+  animation: fadeOut 0.3s cubic-bezier(0.215, 0.610, 0.355, 1) forwards, zoomOut 0.25s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.8);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes zoomOut {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0.8);
   }
 }

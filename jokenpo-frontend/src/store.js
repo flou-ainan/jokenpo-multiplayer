@@ -20,5 +20,13 @@ export const useAppStore = create( (set) => ({
     serverUrl: "start",
     setServerUrl: (serverUrl) => {
         set((state) =>({serverUrl: serverUrl}))
-    }
+    },
+    // is host or guest?
+    isHost: null,
+    setIsHost: (isHost) => set({isHost: isHost})
 }));
+
+export const useDataStore = create( (set) => ({
+    data: null,
+    setData: data => set({data: data})
+}))
